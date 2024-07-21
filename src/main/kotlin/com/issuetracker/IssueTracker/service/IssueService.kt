@@ -8,4 +8,5 @@ import org.springframework.stereotype.Service
 @Service
 class IssueService( @Qualifier("database") private val dataSource: IssueDataSource) {
     fun getIssues():Collection<Issue> = dataSource.retrieveIssues()
+    fun createIssue(issue: Issue):Issue=dataSource.createIssue(issue)
 }

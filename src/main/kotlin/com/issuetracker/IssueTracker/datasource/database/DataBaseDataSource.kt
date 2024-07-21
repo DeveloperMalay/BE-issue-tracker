@@ -10,4 +10,8 @@ class DataBaseDataSource(  private val issueRepository: IssueRepository): IssueD
     override fun retrieveIssues(): Collection<Issue> {
         return issueRepository.findAll()
     }
+
+    override fun createIssue(issue: Issue): Issue {
+        return issueRepository.save(issue)
+    }
 }
