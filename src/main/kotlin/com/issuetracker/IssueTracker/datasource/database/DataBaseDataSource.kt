@@ -10,4 +10,23 @@ class DataBaseDataSource(  private val issueRepository: IssueRepository): IssueD
     override fun retrieveIssues(): Collection<Issue> {
         return issueRepository.findAll()
     }
+
+    override fun createIssue(issue: Issue): Issue {
+        return issueRepository.save(issue)
+    }
+
+    override fun retrieveIssue(id: Long): Issue? {
+        val issue = issueRepository.findById(id)
+        return if (issue.isPresent) issue.get() else null
+    }
+
+    override fun deleteIssue(id: Long) {
+        if (issueRepository.existsById(id)) {
+            issueRepository.deleteById(id)
+        } else {
+            throw NoSuchElementException("Issue not found with id: $id")
+        }
+    }
+
+
 }
