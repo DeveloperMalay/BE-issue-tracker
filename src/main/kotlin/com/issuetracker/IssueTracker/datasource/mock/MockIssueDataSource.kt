@@ -53,4 +53,14 @@ class MockIssueDataSource: IssueDataSource {
     override fun createIssue(issue: Issue): Issue {
         TODO("Not yet implemented")
     }
+
+    override fun retrieveIssue(id: Long): Issue? {
+        TODO("Not yet implemented")
+    }
+
+    override fun deleteIssue(id: Long) {
+        TODO("Not yet implemented")
+    }
+
+
 }

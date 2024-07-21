@@ -21,4 +21,12 @@ class IssueController(private val service:IssueService) {
         return ResponseEntity(createdIssue, HttpStatus.CREATED)
     }
 
+    @GetMapping("/{id}")
+    fun getIssue(@PathVariable id: Long):Issue?=service.getIssue(id)
+
+    @DeleteMapping("/{id}")
+    fun deleteIssue(@PathVariable id:Long) = service.deleteIssue(id)
+
+
+
 }
