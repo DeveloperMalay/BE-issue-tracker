@@ -8,6 +8,6 @@ import jakarta.persistence.*
 data class User(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long = 0,
-    val username: String,
-    val password: String
+    val email: String,
+    val password: String,
 )
