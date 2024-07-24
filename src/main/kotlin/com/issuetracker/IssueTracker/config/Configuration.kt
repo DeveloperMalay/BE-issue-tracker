@@ -1,5 +1,6 @@
 package com.issuetracker.IssueTracker.config
 
+import com.issuetracker.IssueTracker.datasource.database.UserDataSourceImpl
 import com.issuetracker.IssueTracker.repository.UserRepository
 import com.issuetracker.IssueTracker.service.CustomUserDetailsService
 import org.springframework.boot.context.properties.EnableConfigurationProperties
@@ -18,14 +19,14 @@ import org.springframework.security.crypto.password.PasswordEncoder
 @EnableConfigurationProperties(JwtProperties::class)
 class Configuration {
     @Bean
-    fun userDetailsService(userRepository: UserRepository): UserDetailsService
+    fun userDetailsService(userRepository: UserDataSourceImpl): UserDetailsService
     = CustomUserDetailsService(userRepository)
 
     @Bean
     fun encoder(): PasswordEncoder =BCryptPasswordEncoder()
 
     @Bean
-    fun authenticationProvider(userRepository: UserRepository):AuthenticationProvider =
+    fun authenticationProvider(userRepository: UserDataSourceImpl):AuthenticationProvider =
         DaoAuthenticationProvider().also {
             it.setUserDetailsService(userDetailsService(userRepository))
             it.setPasswordEncoder(encoder())

@@ -5,6 +5,7 @@ import com.issuetracker.IssueTracker.model.User
 import com.issuetracker.IssueTracker.repository.UserRepository
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Repository
+import java.util.UUID
 
 @Repository
 class UserDataSourceImpl(
@@ -15,20 +16,27 @@ class UserDataSourceImpl(
      return userRepository.findAll()
     }
 
-    override fun createUser(user: User): User {
+    override fun createUser(user: User): User? {
+        val found =userRepository.findByEmail(user.email)
+        return if(found==null){
+
         val updatedUser =user.copy(password = encoder.encode(user.password))
-      return  userRepository.save(updatedUser)
+            return  userRepository.save(updatedUser)
+        }else null
     }
 
     override fun findByEmail(email: String): User? {
-        return userRepository.findByEmail(email)
+        println("email: $email")
+       val user =  userRepository.findByEmail(email)
+        println("User fetched from repository: ${user?.email}")
+        return  user;
     }
 
-    override fun findById(id: Long): User? {
-        return userRepository.findById(id).orElse(null)
+    override fun findById(id: UUID): User? {
+        return userRepository.findById(id)
     }
 
-    override fun deleteUser(id: Long) {
-        userRepository.deleteById(id)
+    override fun deleteUser(id: UUID) {
+//        userRepository.deleteById(id)
     }
 }
