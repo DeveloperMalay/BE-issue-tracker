@@ -8,4 +8,5 @@ class IssueTrackerApplication
 
 fun main(args: Array<String>) {
 	runApplication<IssueTrackerApplication>(*args)
+
 }
