@@ -10,11 +10,18 @@ data class User(
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     val id: UUID? = null,
-    val email: String,
-    val password: String,
-    val role: Role
+
+    @Column(nullable = false, unique = true)
+    val email: String = "",
+
+    @Column(nullable = false)
+    val password: String = "",
+
+    @Enumerated(EnumType.ORDINAL)
+    val role: Role = Role.USER
 )
 
-enum class Role{
-    ADMIN , USER
+enum class Role {
+    ADMIN,
+    USER
 }

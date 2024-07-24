@@ -27,8 +27,12 @@ class UserDataSourceImpl(
 
     override fun findByEmail(email: String): User? {
         println("email: $email")
-       val user =  userRepository.findByEmail(email)
-        println("User fetched from repository: ${user?.email}")
+        val user =  userRepository.findByEmail(email)
+        if (user != null) {
+            println("User fetched from repository: ${user.email}")
+        } else {
+            println("No user found with email: $email")
+        }
         return  user;
     }
 

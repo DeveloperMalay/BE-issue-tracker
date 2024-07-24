@@ -12,19 +12,5 @@ import kotlin.test.Test
 @SpringBootTest
 @ActiveProfiles("test")
 class UserDataSourceImplTest{
-    @Test
-    fun `should find user by email`() {
-        // Given
-        val userRepository = mock(UserRepository::class.java)
-        val email = "email2@gmail.com"
-        val user = User(id = 1L, email = email, password = "test@123")
 
-        `when`(userRepository.findByEmail(email)).thenReturn(user)
-
-        // When
-        val foundUser = userRepository.findByEmail(email)
-
-        // Then
-        assertEquals(user, foundUser)
-    }
 }

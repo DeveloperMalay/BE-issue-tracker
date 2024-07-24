@@ -22,12 +22,12 @@ class SecurityConfiguration (
     ): DefaultSecurityFilterChain=
         http.csrf{it.disable()}
             .authorizeHttpRequests{
-                it.requestMatchers("/api/auth","/api/auth/refresh","/error")
+                it.requestMatchers("/api/auth","/api/auth/refresh","/error","/api/issues","/api/user")
                     .permitAll()
-                    .requestMatchers(HttpMethod.POST,"/api/user")
-                    .permitAll()
-                    .requestMatchers("/api/user**")
-                    .hasRole("ADMIN")
+//                    .requestMatchers(HttpMethod.POST,"/api/user")
+//                    .permitAll()
+//                    .requestMatchers("/api/user**")
+//                    .hasRole("ADMIN")
                     .anyRequest()
                     .fullyAuthenticated()
 

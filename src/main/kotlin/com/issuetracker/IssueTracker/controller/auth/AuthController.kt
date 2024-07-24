@@ -16,8 +16,9 @@ class AuthController(
     fun authenticate(@RequestBody authRequest:AuthenticationRequest ):AuthenticationResponse {
 
         val res =authenticationService.authentication(authRequest);
-        println("response==========> $res ")
+        println("response==========> $res")
        return  res;
+//        return AuthenticationResponse(accessToken = "kjnkwnkwjendkjwedkejwndklekwmdlkemwdlke")
     }
 
 }
