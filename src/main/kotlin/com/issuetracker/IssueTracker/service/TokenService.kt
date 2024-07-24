@@ -12,10 +12,11 @@ import java.util.*
 class TokenService (
     jwtProperties: JwtProperties
 ){
-    private val  secretKey = Keys.hmacShaKeyFor(
+    private val secretKey = Keys.hmacShaKeyFor(
         jwtProperties.key.toByteArray()
     )
-    fun generate(
+
+    fun  generate(
         userDetails: UserDetails,
         expirationDate: Date,
         additionalClaims: Map<String,Any> = emptyMap()
@@ -30,9 +31,9 @@ class TokenService (
         signWith(secretKey).
         compact()
 
-    fun extractEmail(token: String):String?=getAllClaims(token).subject
+    fun extractEmail(token: String): String? = getAllClaims(token.trim()).subject
 
-    fun isExpired(token: String):Boolean = getAllClaims(token).expiration.before(Date(System.currentTimeMillis()))
+    fun isExpired(token: String):Boolean = getAllClaims(token.trim()).expiration.before(Date(System.currentTimeMillis()))
 
     fun isValid(token: String,userDetails: UserDetails):Boolean {
         val email=extractEmail(token)
@@ -41,6 +42,10 @@ class TokenService (
 
     private fun getAllClaims(token: String): Claims{
         val parser =Jwts.parser().verifyWith(secretKey).build()
-        return  parser.parseSignedClaims(token).payload
+        println("secret key------------> $secretKey")
+        val claim= parser.parseSignedClaims(token).payload;
+        println("claim $claim")
+        return  claim;
+
     }
 }

@@ -30,6 +30,7 @@ class AuthenticationService (
             userDetails = user,
             expirationDate = Date(System.currentTimeMillis() + jwtProperties.accessTokenExpiration)
         )
+        println("access token $accessToken")
         return AuthenticationResponse(
             accessToken = accessToken
         )

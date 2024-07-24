@@ -18,6 +18,7 @@ class UserController(
 
     @PostMapping
     fun createUser(@RequestBody user: UserRequest): UserResponse {
+        println("create user request $user")
         val createdUser = service.createUser(user=user.toModel())
         return createdUser?.toResponse()?: throw  ResponseStatusException(HttpStatus.BAD_REQUEST, "Can not create user ")
     }

@@ -23,7 +23,7 @@ class Configuration {
     = CustomUserDetailsService(userRepository)
 
     @Bean
-    fun encoder(): PasswordEncoder =BCryptPasswordEncoder()
+    fun encoder(): PasswordEncoder = BCryptPasswordEncoder()
 
     @Bean
     fun authenticationProvider(userRepository: UserDataSourceImpl):AuthenticationProvider =

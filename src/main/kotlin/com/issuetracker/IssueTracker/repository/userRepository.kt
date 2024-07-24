@@ -13,5 +13,5 @@ interface UserRepository : JpaRepository<User, Long>{
     fun findByEmail(@Param("email") email: String): User?
 
     @Query("SELECT u FROM User u WHERE u.id = :id")
-    fun findById(id: UUID): User?
+    fun findById(@Param("id") id: UUID): User?
 }
