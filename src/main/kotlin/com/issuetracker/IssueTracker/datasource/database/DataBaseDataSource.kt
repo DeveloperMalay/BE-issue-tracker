@@ -28,5 +28,15 @@ class DataBaseDataSource(  private val issueRepository: IssueRepository): IssueD
         }
     }
 
+    override fun modifyIssue(issue: Issue): Issue? {
+        if (issueRepository.existsById(issue.id!!)) {
+            issueRepository.deleteById(issue.id)
+            issueRepository.save(issue)
+            return issue
+        } else {
+            throw NoSuchElementException("Issue not found with id: ${issue.id}")
+        }
+    }
+
 
 }

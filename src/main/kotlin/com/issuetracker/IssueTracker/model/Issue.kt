@@ -7,7 +7,7 @@ import java.time.LocalDateTime
 data class Issue(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long? = null,
-    val title: String,
+    var title: String,
     val description: String,
     val status:String,
     val createdAt: LocalDateTime = LocalDateTime.now(),
