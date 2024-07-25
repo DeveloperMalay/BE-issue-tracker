@@ -41,6 +41,6 @@ class UserDataSourceImpl(
     }
 
     override fun deleteUser(id: UUID) {
-//        userRepository.deleteById(id)
+        userRepository.deleteById(id)
     }
 }

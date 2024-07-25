@@ -6,7 +6,7 @@ import com.issuetracker.IssueTracker.repository.IssueRepository
 import org.springframework.stereotype.Repository
 
 @Repository("database")
-class DataBaseDataSource(  private val issueRepository: IssueRepository): IssueDataSource {
+class IssueDataSourceImpl(private val issueRepository: IssueRepository): IssueDataSource {
     override fun retrieveIssues(): Collection<Issue> {
         return issueRepository.findAll()
     }
