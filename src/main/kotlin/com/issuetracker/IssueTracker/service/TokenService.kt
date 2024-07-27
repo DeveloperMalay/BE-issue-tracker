@@ -46,6 +46,5 @@ class TokenService (
         val claim= parser.parseSignedClaims(token).payload;
         println("claim $claim")
         return  claim;
-
     }
 }

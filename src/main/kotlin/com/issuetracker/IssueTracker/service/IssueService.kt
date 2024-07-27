@@ -11,4 +11,5 @@ class IssueService( @Qualifier("database") private val dataSource: IssueDataSour
     fun createIssue(issue: Issue):Issue=dataSource.createIssue(issue)
     fun getIssue(id:Long): Issue? =dataSource.retrieveIssue(id)
     fun deleteIssue(id: Long) = dataSource.deleteIssue(id)
+    fun updateIssue(issue: Issue): Issue? =dataSource.modifyIssue(issue)
 }

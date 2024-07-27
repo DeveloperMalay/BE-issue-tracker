@@ -62,5 +62,9 @@ class MockIssueDataSource: IssueDataSource {
         TODO("Not yet implemented")
     }
 
+    override fun modifyIssue(issue: Issue): Issue {
+        TODO("Not yet implemented")
+    }
+
 
 }

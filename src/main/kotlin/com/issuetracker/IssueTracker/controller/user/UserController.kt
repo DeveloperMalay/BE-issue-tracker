@@ -29,13 +29,16 @@ class UserController(
         password = this.password,
         role = Role.USER
     )
+
     private fun User.toResponse(): UserResponse = UserResponse(uuid = this.id ?: UUID.randomUUID(), email=this.email)
+
+
     @GetMapping("/{id}")
     fun getUser(@PathVariable id: UUID): User?=service.getUser(id)
 
     @DeleteMapping("/{id}")
     fun deleteUser(@PathVariable id:UUID) = service.deleteUser(id)
 
-    @GetMapping("/{email}")
+    @GetMapping("email/{email}")
     fun getUserByEmail(@PathVariable email: String)=service.findUserByEmail(email)
 }

@@ -6,7 +6,7 @@ import com.issuetracker.IssueTracker.repository.IssueRepository
 import org.springframework.stereotype.Repository
 
 @Repository("database")
-class DataBaseDataSource(  private val issueRepository: IssueRepository): IssueDataSource {
+class IssueDataSourceImpl(private val issueRepository: IssueRepository): IssueDataSource {
     override fun retrieveIssues(): Collection<Issue> {
         return issueRepository.findAll()
     }
@@ -25,6 +25,19 @@ class DataBaseDataSource(  private val issueRepository: IssueRepository): IssueD
             issueRepository.deleteById(id)
         } else {
             throw NoSuchElementException("Issue not found with id: $id")
+        }
+    }
+
+    override fun modifyIssue(issue: Issue): Issue? {
+        if (issueRepository.existsById(issue.id!!)) {
+            val existingIssue:Issue =issueRepository.findById(issue.id).orElseThrow()
+            existingIssue.title=issue.title;
+            existingIssue.description=issue.description
+            existingIssue.status=issue.status
+            issueRepository.save(existingIssue)
+            return issue
+        } else {
+            throw NoSuchElementException("Issue not found with id: ${issue.id}")
         }
     }
 
