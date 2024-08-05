@@ -29,15 +29,17 @@ class IssueDataSourceImpl(private val issueRepository: IssueRepository): IssueDa
     }
 
     override fun modifyIssue(issue: Issue): Issue? {
-        if (issueRepository.existsById(issue.id!!)) {
-            val existingIssue:Issue =issueRepository.findById(issue.id).orElseThrow()
+        if (issue.id!=null) {
+            val existingIssue:Issue =issueRepository.findById(issue.id).orElseThrow{
+                NoSuchElementException("Issue with ID ${issue.id} not found")
+            }
             existingIssue.title=issue.title;
             existingIssue.description=issue.description
             existingIssue.status=issue.status
             issueRepository.save(existingIssue)
             return issue
         } else {
-            throw NoSuchElementException("Issue not found with id: ${issue.id}")
+            throw NoSuchElementException("No Issue Id found")
         }
     }
 

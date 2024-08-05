@@ -10,7 +10,7 @@ internal class IssueServiceTest{
     private val dataSource:IssueDataSource= mockk(relaxed = true)
     private val issueService=IssueService(dataSource)
     @Test
-    fun `should call it's data source to retrieve banks`(){
+    fun `should call it's data source to retrieve Issues`(){
         //given
 
         //when
