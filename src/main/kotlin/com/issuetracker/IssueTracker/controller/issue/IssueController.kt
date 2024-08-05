@@ -1,4 +1,4 @@
-package com.issuetracker.IssueTracker.controller
+package com.issuetracker.IssueTracker.controller.issue
 
 
 import com.issuetracker.IssueTracker.model.Issue
