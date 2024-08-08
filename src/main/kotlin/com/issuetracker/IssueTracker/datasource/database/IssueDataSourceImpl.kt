@@ -3,12 +3,14 @@ package com.issuetracker.IssueTracker.datasource.database
 import com.issuetracker.IssueTracker.datasource.IssueDataSource
 import com.issuetracker.IssueTracker.model.Issue
 import com.issuetracker.IssueTracker.repository.IssueRepository
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Repository
 
 @Repository("database")
 class IssueDataSourceImpl(private val issueRepository: IssueRepository): IssueDataSource {
-    override fun retrieveIssues(): Collection<Issue> {
-        return issueRepository.findAll()
+    override fun retrieveIssues(pageable: Pageable): Page<Issue> {
+        return issueRepository.findAll(pageable)
     }
 
     override fun createIssue(issue: Issue): Issue {
