@@ -1,9 +1,10 @@
 package com.issuetracker.IssueTracker.service
 
 import com.issuetracker.IssueTracker.config.JwtProperties
-import io.jsonwebtoken.Claims
-import io.jsonwebtoken.Jwts
+import com.issuetracker.IssueTracker.exception.JwtTokenException
+import io.jsonwebtoken.*
 import io.jsonwebtoken.security.Keys
+import io.jsonwebtoken.security.SignatureException
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.stereotype.Service
 import java.util.*
@@ -41,10 +42,24 @@ class TokenService (
     }
 
     private fun getAllClaims(token: String): Claims{
-        val parser =Jwts.parser().verifyWith(secretKey).build()
-        println("secret key------------> $secretKey")
-        val claim= parser.parseSignedClaims(token).payload;
-        println("claim $claim")
-        return  claim;
+       try {
+           val parser =Jwts.parser().verifyWith(secretKey).build()
+           println("secret key------------> $secretKey")
+           val claim= parser.parseSignedClaims(token).payload;
+           println("claim $claim")
+           return  claim;
+       }  catch (e: SignatureException) {
+           throw JwtTokenException("Invalid JWT signature: ${e.message}")
+       }catch (e: ExpiredJwtException) {
+           throw JwtTokenException("JWT token is expired: ${e.message}")
+       } catch (e: MalformedJwtException) {
+           throw JwtTokenException("Malformed JWT token: ${e.message}")
+       } catch (e: UnsupportedJwtException) {
+           throw JwtTokenException("Unsupported JWT token: ${e.message}")
+       } catch (e: IllegalArgumentException) {
+           throw JwtTokenException("JWT claims string is empty: ${e.message}")
+       }catch (e: JwtTokenException) {
+           throw JwtTokenException("Invalid JWT signature: ${e.message}")
+       }
     }
 }

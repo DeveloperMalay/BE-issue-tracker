@@ -3,6 +3,7 @@ package com.issuetracker.IssueTracker.controller.issue
 
 import com.issuetracker.IssueTracker.model.Issue
 import com.issuetracker.IssueTracker.service.IssueService
+import io.jsonwebtoken.security.SignatureException
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
@@ -13,6 +14,17 @@ import org.springframework.web.bind.annotation.*
 @RestController
 @RequestMapping("api/issues")
 class IssueController(private val service:IssueService) {
+
+    @ExceptionHandler(NoSuchElementException::class)
+    fun handleNotFound(e:NoSuchElementException):ResponseEntity<String> = ResponseEntity(e.message, HttpStatus.NOT_FOUND)
+
+    @ExceptionHandler(IllegalArgumentException::class)
+    fun handleNotFound(e:IllegalArgumentException):ResponseEntity<String> = ResponseEntity(e.message, HttpStatus.BAD_REQUEST)
+
+    @ExceptionHandler(SignatureException::class)
+    fun handleSignatureException(e: SignatureException): ResponseEntity<String> =
+        ResponseEntity("Invalid JWT signature: ${e.message}", HttpStatus.UNAUTHORIZED)
+
 
     @GetMapping
     fun getIssues(@RequestParam(defaultValue = "0") page: Int,
@@ -46,10 +58,10 @@ class IssueController(private val service:IssueService) {
     private fun Page<Issue>.toIssueResponse(): IssueResponse {
         return IssueResponse(
             totalPages = this.totalPages,
-            content = this.content,
             currentPageNumber = this.number,
             numberOfElements = this.numberOfElements,
-            empty = this.isEmpty
+            empty = this.isEmpty,
+            content = this.content
         )
     }
 
