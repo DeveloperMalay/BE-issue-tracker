@@ -1,8 +1,10 @@
 package com.issuetracker.IssueTracker.datasource.database
 
 import com.issuetracker.IssueTracker.datasource.IssueDataSource
+import com.issuetracker.IssueTracker.exception.JwtTokenException
 import com.issuetracker.IssueTracker.model.Issue
 import com.issuetracker.IssueTracker.repository.IssueRepository
+import io.jsonwebtoken.security.SignatureException
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Repository
@@ -14,12 +16,16 @@ class IssueDataSourceImpl(private val issueRepository: IssueRepository): IssueDa
     }
 
     override fun createIssue(issue: Issue): Issue {
-        return issueRepository.save(issue)
+        try {
+            return issueRepository.save(issue)
+        }catch (e: SignatureException){
+            throw JwtTokenException("Invalid JWT signature: ${e.message}")
+        }
     }
 
     override fun retrieveIssue(id: Long): Issue? {
-        val issue = issueRepository.findById(id)
-        return if (issue.isPresent) issue.get() else null
+        return issueRepository.findById(id)
+            .orElseThrow { NoSuchElementException("Issue not found with id: $id") }
     }
 
     override fun deleteIssue(id: Long) {

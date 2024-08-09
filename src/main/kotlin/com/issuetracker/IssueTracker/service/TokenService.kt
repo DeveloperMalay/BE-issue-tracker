@@ -32,7 +32,13 @@ class TokenService (
         signWith(secretKey).
         compact()
 
-    fun extractEmail(token: String): String? = getAllClaims(token.trim()).subject
+    fun extractEmail(token: String): String? {
+        try {
+            return  getAllClaims(token.trim()).subject;
+        }catch (e: SignatureException) {
+            throw JwtTokenException("Invalid JWT signature: ${e.message}")
+        }
+    }
 
     fun isExpired(token: String):Boolean = getAllClaims(token.trim()).expiration.before(Date(System.currentTimeMillis()))
 
@@ -42,24 +48,10 @@ class TokenService (
     }
 
     private fun getAllClaims(token: String): Claims{
-       try {
-           val parser =Jwts.parser().verifyWith(secretKey).build()
-           println("secret key------------> $secretKey")
-           val claim= parser.parseSignedClaims(token).payload;
-           println("claim $claim")
-           return  claim;
-       }  catch (e: SignatureException) {
-           throw JwtTokenException("Invalid JWT signature: ${e.message}")
-       }catch (e: ExpiredJwtException) {
-           throw JwtTokenException("JWT token is expired: ${e.message}")
-       } catch (e: MalformedJwtException) {
-           throw JwtTokenException("Malformed JWT token: ${e.message}")
-       } catch (e: UnsupportedJwtException) {
-           throw JwtTokenException("Unsupported JWT token: ${e.message}")
-       } catch (e: IllegalArgumentException) {
-           throw JwtTokenException("JWT claims string is empty: ${e.message}")
-       }catch (e: JwtTokenException) {
-           throw JwtTokenException("Invalid JWT signature: ${e.message}")
-       }
+        val parser =Jwts.parser().verifyWith(secretKey).build()
+        println("secret key------------> $secretKey")
+        val claim= parser.parseSignedClaims(token).payload;
+        println("claim $claim")
+        return  claim;
     }
 }

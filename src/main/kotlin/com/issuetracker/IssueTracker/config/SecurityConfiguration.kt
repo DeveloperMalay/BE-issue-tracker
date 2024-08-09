@@ -1,5 +1,6 @@
 package com.issuetracker.IssueTracker.config
 
+import com.issuetracker.IssueTracker.exception.CustomAuthenticationEntryPoint
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.http.HttpMethod
@@ -13,7 +14,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @EnableWebSecurity
 class SecurityConfiguration (
-    private val authenticationProvider: AuthenticationProvider
+    private val authenticationProvider: AuthenticationProvider,
+    private val customAuthenticationEntryPoint: CustomAuthenticationEntryPoint
 ){
     @Bean
     fun securityFilterChain(

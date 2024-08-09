@@ -1,15 +1,18 @@
 package com.issuetracker.IssueTracker.controller.issue
 
 
+import com.issuetracker.IssueTracker.exception.JwtTokenException
 import com.issuetracker.IssueTracker.model.Issue
 import com.issuetracker.IssueTracker.service.IssueService
 import io.jsonwebtoken.security.SignatureException
+import jakarta.servlet.http.HttpServletRequest
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
+import javax.naming.AuthenticationException
 
 @RestController
 @RequestMapping("api/issues")
@@ -21,9 +24,27 @@ class IssueController(private val service:IssueService) {
     @ExceptionHandler(IllegalArgumentException::class)
     fun handleNotFound(e:IllegalArgumentException):ResponseEntity<String> = ResponseEntity(e.message, HttpStatus.BAD_REQUEST)
 
-    @ExceptionHandler(SignatureException::class)
-    fun handleSignatureException(e: SignatureException): ResponseEntity<String> =
-        ResponseEntity("Invalid JWT signature: ${e.message}", HttpStatus.UNAUTHORIZED)
+    @ExceptionHandler(JwtTokenException::class)
+    fun handleJwtTokenException(
+        ex: JwtTokenException,
+        request: HttpServletRequest
+    ): ResponseEntity<Map<String, String>> {
+        return ResponseEntity(
+            mapOf("error" to "Invalid JWT token: ${ex.message}"),
+            HttpStatus.UNAUTHORIZED
+        )
+    }
+
+    @ExceptionHandler(AuthenticationException::class)
+    fun handleAuthenticationException(
+        ex: AuthenticationException,
+        request: HttpServletRequest
+    ): ResponseEntity<Map<String, String>> {
+        return ResponseEntity(
+            mapOf("error" to "Authentication failed: ${ex.message}"),
+            HttpStatus.UNAUTHORIZED
+        )
+    }
 
 
     @GetMapping
