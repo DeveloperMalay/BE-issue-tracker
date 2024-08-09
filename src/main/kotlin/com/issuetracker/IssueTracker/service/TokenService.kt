@@ -1,9 +1,10 @@
 package com.issuetracker.IssueTracker.service
 
 import com.issuetracker.IssueTracker.config.JwtProperties
-import io.jsonwebtoken.Claims
-import io.jsonwebtoken.Jwts
+import com.issuetracker.IssueTracker.exception.JwtTokenException
+import io.jsonwebtoken.*
 import io.jsonwebtoken.security.Keys
+import io.jsonwebtoken.security.SignatureException
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.stereotype.Service
 import java.util.*
@@ -31,7 +32,13 @@ class TokenService (
         signWith(secretKey).
         compact()
 
-    fun extractEmail(token: String): String? = getAllClaims(token.trim()).subject
+    fun extractEmail(token: String): String? {
+        try {
+            return  getAllClaims(token.trim()).subject;
+        }catch (e: SignatureException) {
+            throw JwtTokenException("Invalid JWT signature: ${e.message}")
+        }
+    }
 
     fun isExpired(token: String):Boolean = getAllClaims(token.trim()).expiration.before(Date(System.currentTimeMillis()))
 

@@ -1,7 +1,9 @@
 package com.issuetracker.IssueTracker.config
 
+import com.issuetracker.IssueTracker.exception.JwtTokenException
 import com.issuetracker.IssueTracker.service.CustomUserDetailsService
 import com.issuetracker.IssueTracker.service.TokenService
+import io.jsonwebtoken.security.SignatureException
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
@@ -29,18 +31,21 @@ class JwtAuthenticationFilter (
         }
 
 
-        val jwtToken= authHeader!!.extractTokenValue()
-        println("jwtToken-------->$jwtToken")
-        val email =tokenService.extractEmail(jwtToken)
-        println("extracted Email========>$email")
-        if(email!=null && SecurityContextHolder.getContext().authentication==null){
-            val foundUser= userDetailsService.loadUserByUsername(email)
-            if(tokenService.isValid(jwtToken,foundUser)){
-                println("token is valid found user $foundUser")
-                updateContext(foundUser,request)
-            }
-            filterChain.doFilter(request,response)
-        }
+       try {
+           val jwtToken= authHeader!!.extractTokenValue()
+           val email =tokenService.extractEmail(jwtToken)
+           if(email!=null && SecurityContextHolder.getContext().authentication==null){
+               val foundUser= userDetailsService.loadUserByUsername(email)
+               if(tokenService.isValid(jwtToken,foundUser)){
+                   updateContext(foundUser,request)
+               }else {
+                   throw IllegalArgumentException("Invalid JWT token")
+               }
+               filterChain.doFilter(request,response)
+           }
+       }catch (e: SignatureException){
+            throw JwtTokenException("Invalid JWT signature: ${e.message}")
+       }
     }
 
     private fun updateContext(foundUser: UserDetails, request: HttpServletRequest) {

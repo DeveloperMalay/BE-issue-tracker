@@ -2,10 +2,13 @@ package com.issuetracker.IssueTracker.datasource.mock
 
 import com.issuetracker.IssueTracker.datasource.IssueDataSource
 import com.issuetracker.IssueTracker.model.Issue
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Repository
 import java.time.LocalDateTime
 
-@Repository("mock")
+//@Repository("mock")
+
 class MockIssueDataSource: IssueDataSource {
     val issueList=listOf(
         Issue(
@@ -49,7 +52,11 @@ class MockIssueDataSource: IssueDataSource {
             updatedAt = LocalDateTime.of(2023, 7, 5, 16, 20)
         )
     )
-    override fun retrieveIssues(): Collection<Issue> = issueList;
+
+    override fun retrieveIssues(pageable: Pageable): Page<Issue> {
+        TODO("Not yet implemented")
+    }
+
     override fun createIssue(issue: Issue): Issue {
         TODO("Not yet implemented")
     }
