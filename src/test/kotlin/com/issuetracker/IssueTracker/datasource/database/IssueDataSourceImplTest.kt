@@ -5,16 +5,12 @@ import com.issuetracker.IssueTracker.repository.IssueRepository
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
-//import org.mockito.Mockito.mock
 import org.mockito.Mockito.*
-import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.test.context.ActiveProfiles
 import java.util.*
 
 
-@SpringBootTest
-@ActiveProfiles("test")
-class IssueDataSourceImplTest {
+
+internal class IssueDataSourceImplTest {
 
     private val issueRepository = mock(IssueRepository::class.java)
     private val issueDataSource = IssueDataSourceImpl(issueRepository)
@@ -110,4 +106,5 @@ class IssueDataSourceImplTest {
 
         assertEquals("No Issue Id found", exception.message)
     }
+
 }
