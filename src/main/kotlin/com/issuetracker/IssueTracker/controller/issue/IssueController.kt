@@ -52,6 +52,7 @@ class IssueController(private val service:IssueService) {
                   @RequestParam(defaultValue = "10") size: Int): IssueResponse {
         val pageable: Pageable = PageRequest.of(page, size)
         val pageOfIssues: Page<Issue> = service.getIssues(pageable)
+        println("issues--->$pageOfIssues")
         return pageOfIssues.toIssueResponse()
     }
 
