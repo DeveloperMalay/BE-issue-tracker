@@ -1,5 +1,6 @@
 package com.issuetracker.IssueTracker.service
 
+import com.issuetracker.IssueTracker.datasource.UserDataSource
 import com.issuetracker.IssueTracker.datasource.database.UserDataSourceImpl
 import com.issuetracker.IssueTracker.repository.UserRepository
 import org.springframework.security.core.userdetails.User
@@ -12,13 +13,11 @@ typealias ApplicationUser=com.issuetracker.IssueTracker.model.User
 
 @Service
 class CustomUserDetailsService(
-    private val userRepository: UserDataSourceImpl
+    private val userRepository: UserDataSource
 ):UserDetailsService {
     override fun loadUserByUsername(username: String): UserDetails {
-        println("username -> $username")
         val res =   userRepository.findByEmail(username)
             ?.mapToUserDetails()?:throw UsernameNotFoundException("Not Found")
-        println("response $res")
         return res;
     }
 
