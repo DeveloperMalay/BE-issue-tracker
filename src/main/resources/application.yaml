@@ -1,6 +1,8 @@
 spring:
   application:
     name: IssueTracker
+  profiles:
+    active: dev
   datasource:
     url: jdbc:mysql://localhost:3306/issue-table-2
     username: root
