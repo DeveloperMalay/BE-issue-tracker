@@ -48,7 +48,7 @@ class IssueController(private val service:IssueService) {
 
 
     @GetMapping
-    fun getIssues(@RequestParam(defaultValue = "0") page: Int,
+    suspend fun getIssues(@RequestParam(defaultValue = "0") page: Int,
                   @RequestParam(defaultValue = "10") size: Int): IssueResponse {
         val pageable: Pageable = PageRequest.of(page, size)
         val pageOfIssues: Page<Issue> = service.getIssues(pageable)

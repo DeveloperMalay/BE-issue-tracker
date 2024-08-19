@@ -8,12 +8,13 @@ import io.jsonwebtoken.security.SignatureException
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Repository
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 @Repository("database")
 class IssueDataSourceImpl(private val issueRepository: IssueRepository): IssueDataSource {
-    override fun retrieveIssues(pageable: Pageable): Page<Issue> {
-        return issueRepository.findAll(pageable)
-    }
+    override  fun retrieveIssues(pageable: Pageable): Page<Issue> =
+        issueRepository.findAll(pageable)
 
     override fun createIssue(issue: Issue): Issue {
         try {
