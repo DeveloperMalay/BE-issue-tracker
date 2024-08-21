@@ -5,8 +5,11 @@ import com.issuetracker.IssueTracker.model.Product
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.reactor.awaitSingle
 import kotlinx.coroutines.withContext
+import org.springframework.stereotype.Service
 import org.springframework.web.reactive.function.client.WebClient
 
+
+@Service
 class ProductService(
     private val webClient: WebClient
 ) {
