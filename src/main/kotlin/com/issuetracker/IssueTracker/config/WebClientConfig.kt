@@ -10,7 +10,6 @@ class WebClientConfig {
     @Bean
     fun webClient(): WebClient {
         return WebClient.builder().baseUrl("https://fakestoreapi.com").build()
-
     }
 
 }
